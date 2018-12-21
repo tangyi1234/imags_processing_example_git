@@ -88,8 +88,10 @@ CGImageRef YYCGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay
         // same as UIGraphicsBeginImageContext() and -[UIView drawRect:]
         CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Host;
         bitmapInfo |= hasAlpha ? kCGImageAlphaPremultipliedFirst : kCGImageAlphaNoneSkipFirst;
+        //解压
         CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 0, YYCGColorSpaceGetDeviceRGB(), bitmapInfo);
         if (!context) return NULL;
+        //解码
         CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef); // decode
         CGImageRef newImage = CGBitmapContextCreateImage(context);
         CFRelease(context);
