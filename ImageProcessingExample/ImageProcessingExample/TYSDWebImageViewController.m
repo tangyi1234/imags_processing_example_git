@@ -7,12 +7,32 @@
 //
 
 #import "TYSDWebImageViewController.h"
+#import "TYSDWebImageTableViewCell.h"
 //#import "UIImageView+WebCache.h"
-@interface TYSDWebImageViewController ()
+@interface TYSDWebImageViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) NSMutableArray *mutableArr;
 @end
 
 @implementation TYSDWebImageViewController
+
+- (NSMutableArray *)mutableArr{
+    if (!_mutableArr) {
+        _mutableArr = [NSMutableArray array];
+        [self addArrValue:_mutableArr];
+    }
+    return _mutableArr;
+}
+
+- (void)addArrValue:(NSMutableArray *)arr{
+    for (int i = 0; i < 103; i++) {
+        [arr addObject:[self andPickStr:i]];
+    }
+}
+
+- (NSString *)andPickStr:(int)i{
+    return [NSString stringWithFormat:@"http://10.10.60.114:8080/name/%d.png",i];
+}
 
 - (UIImageView *)imageView{
     if (!_imageView) {
@@ -24,8 +44,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view addSubview:self.imageView];
-    [self addRequestLoad];
+//    [self.view addSubview:self.imageView];
+//    [self addRequestLoad];
+    [self initTableView];
 }
 
 - (void)addRequestLoad{
@@ -45,6 +66,31 @@
 //        [[SDImageCache sharedImageCache] clearDisk];
 //    });
 
+}
+
+- (void)initTableView{
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, W, H) style:UITableViewStylePlain];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self.view addSubview:tableView];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.mutableArr.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    TYSDWebImageTableViewCell *cell = [TYSDWebImageTableViewCell addSDWebImageTableViewCell:tableView];
+    [cell addImageUrl:self.mutableArr[[indexPath row]]];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 200;
 }
 
 - (void)didReceiveMemoryWarning {

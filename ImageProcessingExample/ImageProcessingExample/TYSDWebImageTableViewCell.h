@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TYSDWebImageTableViewCell : UITableViewCell
-
++ (TYSDWebImageTableViewCell *)addSDWebImageTableViewCell:(UITableView *)tableView;
+- (void)addImageUrl:(NSString *)urlStr;
 @end
