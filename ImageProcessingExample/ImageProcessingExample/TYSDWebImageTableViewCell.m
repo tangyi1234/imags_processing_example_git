@@ -11,6 +11,8 @@
 @property (nonatomic, weak) UIImageView *imageViews;
 @end
 @implementation TYSDWebImageTableViewCell
+
+
 + (TYSDWebImageTableViewCell *)addSDWebImageTableViewCell:(UITableView *)tableView{
     static NSString *Id = @"TYSDWebImageTableViewCell";
     TYSDWebImageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Id];
@@ -30,9 +32,14 @@
 - (void)addImageUrl:(NSString *)urlStr{
     NSURL *url = [NSURL URLWithString:urlStr];
     [_imageViews sd_setImageWithURL:url completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        
+        NSLog(@"从那里来的数据:%ld",(long)cacheType);
+        NSString *urlStr = [NSString stringWithFormat:@"%@",imageURL];
+        if (_storageBlock) {
+            _storageBlock(urlStr);
+        }
     }];
 }
+
 
 - (void)awakeFromNib {
     [super awakeFromNib];

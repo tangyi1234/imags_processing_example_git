@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef void(^storage)(NSString *urlStr);
 @interface TYSDWebImageTableViewCell : UITableViewCell
+@property (nonatomic, copy) storage storageBlock;
 + (TYSDWebImageTableViewCell *)addSDWebImageTableViewCell:(UITableView *)tableView;
 - (void)addImageUrl:(NSString *)urlStr;
 @end

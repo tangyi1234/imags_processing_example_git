@@ -193,7 +193,7 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
             shouldScaleDown = [scaleDownLargeImagesOption boolValue];
         }
     }
-    if (!shouldScaleDown) {
+    if (!shouldScaleDown) {//直接解压返回(image是从磁盘中获取到的)
         return [self sd_decompressedImageWithImage:image];
     } else {
         //解压和解码

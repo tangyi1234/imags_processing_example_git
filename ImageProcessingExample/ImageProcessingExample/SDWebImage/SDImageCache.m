@@ -154,7 +154,8 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 @property (strong, nonatomic, nullable) NSMutableArray<NSString *> *customPaths;
 @property (strong, nonatomic, nullable) dispatch_queue_t ioQueue;
 @property (strong, nonatomic, nonnull) NSFileManager *fileManager;
-
+@property (assign, nonatomic) NSUInteger imgSize;  //储存的图片大小
+@property (assign, nonatomic) NSUInteger remImgSize;  //将要删除的图片大小总和
 @end
 
 
@@ -193,6 +194,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
         // Init the memory cache
         _memCache = [[SDMemoryCache alloc] initWithConfig:_config];
         _memCache.name = fullNamespace;
+        
 
         // Init the disk cache
         if (directory != nil) {
@@ -247,7 +249,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 - (nullable NSString *)defaultCachePathForKey:(nullable NSString *)key {
     return [self cachePathForKey:key inPath:self.diskCachePath];
 }
-
+//将url进行MD5加密
 - (nullable NSString *)cachedFileNameForKey:(nullable NSString *)key {
     const char *str = key.UTF8String;
     if (str == NULL) {
@@ -301,10 +303,21 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
         }
         return;
     }
+    NSLog(@"存储这个key值是什么:%@",key);
     // if memory cache is enabled  如果启用了内存缓存
     if (self.config.shouldCacheImagesInMemory) {//使用储存缓存
         NSUInteger cost = SDCacheCostForImage(image);//计数出图片的大小
         [self.memCache setObject:image forKey:key cost:cost];
+        /**
+         储存的数据到了50M就进行删除图片
+         */
+        _imgSize = _imgSize + cost;
+        float MBCache = _imgSize/1000/1000;
+        if (MBCache >= 50) {
+            if (_imageCleanDataBlock) {
+                _imageCleanDataBlock();
+            }
+        }
     }
     
     if (toDisk) {//储存在硬盘中
@@ -503,6 +516,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     if (data) {
         //获取UIImage，这里是通过UIImage只带方法获取(这里就是到磁盘中提取数据)
         UIImage *image = [[SDWebImageCodersManager sharedInstance] decodedImageWithData:data];
+        NSLog(@"从磁盘中获取图片");
         //不做编解码操作
         image = [self scaledImageForKey:key image:image];
         if (self.config.shouldDecompressImages) {//需要将数据进行编码
@@ -532,6 +546,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     }
     
     // First check the in-memory cache...先看看本地是否有这张图片(这里内存缓存中。chche中)
+    NSLog(@"通过key值去获取数据:%@",key);
     UIImage *image = [self imageFromMemoryCacheForKey:key];
     BOOL shouldQueryMemoryOnly = (image && !(options & SDImageCacheQueryDataWhenInMemory));//有图片且没有设置要到磁盘中去查询
     if (shouldQueryMemoryOnly) {
@@ -629,21 +644,54 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 }
 
 # pragma mark - Mem Cache settings
-
+//设置最大值
 - (void)setMaxMemoryCost:(NSUInteger)maxMemoryCost {
     self.memCache.totalCostLimit = maxMemoryCost;
 }
-
+//缓存空间的最大总成本，超出上限会自动回收对象。默认值为0，表示没有限制
 - (NSUInteger)maxMemoryCost {
     return self.memCache.totalCostLimit;
 }
-
+//能够缓存的对象的最大数量。默认值为0，表示没有限制
 - (NSUInteger)maxMemoryCountLimit {
     return self.memCache.countLimit;
 }
 
 - (void)setMaxMemoryCountLimit:(NSUInteger)maxCountLimit {
     self.memCache.countLimit = maxCountLimit;
+}
+
+- (void)setAgent{
+    self.memCache.delegate = self;
+}
+
+- (void)cache:(NSCache *)cache willEvictObject:(id)obj{
+    NSLog(@"回收了那些缓存:%@ 对象：%@",cache,obj);
+    
+}
+//删除cache上的key值
+- (void)removeCacheObjectForKey:(id)key{
+    NSString *keyStr = [NSString stringWithFormat:@"%@",key];
+//    if ([self imageFromMemoryCacheForKey:key]) {
+//        [self.memCache removeObjectForKey:key];
+//    }
+    if (key){
+        //先获取将要删除的图片，存在cache中的图片是经过解压和解码的图片
+        UIImage *image = [self imageFromMemoryCacheForKey:keyStr];
+        if (image) {
+            //计算图片大小
+            NSUInteger cost = SDCacheCostForImage(image);//计数出图片的大小
+            _remImgSize = _remImgSize + cost;//叠加
+           [self.memCache removeObjectForKey:key];
+        }
+        
+    }
+}
+
+
+- (void)operationalImageData{
+    _imgSize = _imgSize - _remImgSize;
+    _remImgSize = 0;
 }
 
 #pragma mark - Cache clean Ops

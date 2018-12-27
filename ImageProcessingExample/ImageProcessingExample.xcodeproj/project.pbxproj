@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A2971E5021CCE89800AD6CA4 /* TYSDWebImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2971E4F21CCE89800AD6CA4 /* TYSDWebImageTableViewCell.m */; };
+		A2A5D08C21D0D88300329685 /* TYSegmentation.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A5D08B21D0D88300329685 /* TYSegmentation.m */; };
 		A2A8E28A21C886C100F66B5C /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A8E24F21C886C100F66B5C /* MKAnnotationView+WebCache.m */; };
 		A2A8E28B21C886C100F66B5C /* NSButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A8E25121C886C100F66B5C /* NSButton+WebCache.m */; };
 		A2A8E28C21C886C100F66B5C /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A8E25321C886C100F66B5C /* NSData+ImageContentType.m */; };
@@ -52,6 +53,8 @@
 /* Begin PBXFileReference section */
 		A2971E4E21CCE89800AD6CA4 /* TYSDWebImageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TYSDWebImageTableViewCell.h; sourceTree = "<group>"; };
 		A2971E4F21CCE89800AD6CA4 /* TYSDWebImageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TYSDWebImageTableViewCell.m; sourceTree = "<group>"; };
+		A2A5D08A21D0D88300329685 /* TYSegmentation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TYSegmentation.h; sourceTree = "<group>"; };
+		A2A5D08B21D0D88300329685 /* TYSegmentation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TYSegmentation.m; sourceTree = "<group>"; };
 		A2A8E24E21C886C100F66B5C /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		A2A8E24F21C886C100F66B5C /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		A2A8E25021C886C100F66B5C /* NSButton+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+WebCache.h"; sourceTree = "<group>"; };
@@ -253,6 +256,8 @@
 				A2971E4F21CCE89800AD6CA4 /* TYSDWebImageTableViewCell.m */,
 				A2DF42B321C7522900498BFD /* TYArray.h */,
 				A2DF42B421C7522900498BFD /* TYArray.m */,
+				A2A5D08A21D0D88300329685 /* TYSegmentation.h */,
+				A2A5D08B21D0D88300329685 /* TYSegmentation.m */,
 				A2D7189721BE0FE500FED8F6 /* Assets.xcassets */,
 				A2D7189921BE0FE500FED8F6 /* LaunchScreen.storyboard */,
 				A2D7189C21BE0FE500FED8F6 /* Info.plist */,
@@ -341,6 +346,7 @@
 				A2D7189621BE0FE500FED8F6 /* ImageProcessingExample.xcdatamodeld in Sources */,
 				A2A8E28D21C886C100F66B5C /* NSImage+WebCache.m in Sources */,
 				A2A8E29521C886C100F66B5C /* SDWebImageDownloader.m in Sources */,
+				A2A5D08C21D0D88300329685 /* TYSegmentation.m in Sources */,
 				A2B64AD621C1F6F400E71B08 /* TYLearningViewController.m in Sources */,
 				A2D7189021BE0FE500FED8F6 /* ViewController.m in Sources */,
 				A2A8E2A221C886C100F66B5C /* UIImage+WebP.m in Sources */,

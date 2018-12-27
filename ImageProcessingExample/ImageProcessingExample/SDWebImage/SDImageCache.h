@@ -53,13 +53,14 @@ typedef void(^SDWebImageCheckCacheCompletionBlock)(BOOL isInCache);
 
 typedef void(^SDWebImageCalculateSizeBlock)(NSUInteger fileCount, NSUInteger totalSize);
 
-
+typedef void(^TYImageCleanData)(void);
 /**
  * SDImageCache maintains a memory cache and an optional disk cache. Disk cache write operations are performed
  * asynchronous so it doesn’t add unnecessary latency to the UI.
  */
-@interface SDImageCache : NSObject
+@interface SDImageCache : NSObject<NSCacheDelegate>
 
+@property (nonatomic, copy) TYImageCleanData _Nullable imageCleanDataBlock;
 #pragma mark - Properties
 
 /**
@@ -313,4 +314,8 @@ typedef void(^SDWebImageCalculateSizeBlock)(NSUInteger fileCount, NSUInteger tot
  */
 - (nullable NSString *)defaultCachePathForKey:(nullable NSString *)key;
 
+- (void)setAgent;
+
+- (void)removeCacheObjectForKey:(id _Nullable )key;
+- (void)operationalImageData;
 @end

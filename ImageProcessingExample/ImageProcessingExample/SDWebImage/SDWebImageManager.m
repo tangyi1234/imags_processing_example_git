@@ -45,6 +45,10 @@
 }
 
 - (nonnull instancetype)init {
+    /**
+     SDImageCache: 用于缓存
+     SDWebImageDownloader: 用于网络图片请求，具体是使用NSURLSession来做请求
+     */
     SDImageCache *cache = [SDImageCache sharedImageCache];
     SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
     return [self initWithCache:cache downloader:downloader];

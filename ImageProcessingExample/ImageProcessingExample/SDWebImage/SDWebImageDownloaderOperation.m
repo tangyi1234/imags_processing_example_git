@@ -285,7 +285,14 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
 }
 
 #pragma mark NSURLSessionDataDelegate
-
+/**
+ *  1.接收到服务器的响应 它默认会取消该请求
+ *
+ *  @param session           会话对象
+ *  @param dataTask          请求任务
+ *  @param response          响应头信息
+ *  @param completionHandler 回调 传给系统
+ */
 - (void)URLSession:(NSURLSession *)session
           dataTask:(NSURLSessionDataTask *)dataTask
 didReceiveResponse:(NSURLResponse *)response
@@ -316,12 +323,24 @@ didReceiveResponse:(NSURLResponse *)response
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:SDWebImageDownloadReceiveResponseNotification object:weakSelf];
     });
-    
+    /*
+     NSURLSessionResponseCancel = 0,取消 默认
+     NSURLSessionResponseAllow = 1, 接收
+     NSURLSessionResponseBecomeDownload = 2, 变成下载任务
+     NSURLSessionResponseBecomeStream        变成流
+     */
     if (completionHandler) {
         completionHandler(disposition);
     }
 }
 
+/**
+ *  接收到服务器返回的数据 调用多次
+ *
+ *  @param session           会话对象
+ *  @param dataTask          请求任务
+ *  @param data              本次下载的数据
+ */
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
     if (!self.imageData) {
         self.imageData = [[NSMutableData alloc] initWithCapacity:self.expectedSize];
@@ -388,7 +407,13 @@ didReceiveResponse:(NSURLResponse *)response
 }
 
 #pragma mark NSURLSessionTaskDelegate
-
+/**
+ *  请求结束或者是失败的时候调用
+ *
+ *  @param session           会话对象
+ *  @param dataTask          请求任务
+ *  @param error             错误信息
+ */
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     @synchronized(self) {
         self.dataTask = nil;
