@@ -10,6 +10,7 @@
 #define PublicHeader_h
 
 #import "SDWebImage.h"
+#import "GPUImage.h"
 
 #define W [UIScreen mainScreen].bounds.size.width
 #define H [UIScreen mainScreen].bounds.size.height

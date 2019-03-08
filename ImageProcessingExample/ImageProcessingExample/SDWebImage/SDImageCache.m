@@ -672,9 +672,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 //删除cache上的key值
 - (void)removeCacheObjectForKey:(id)key{
     NSString *keyStr = [NSString stringWithFormat:@"%@",key];
-//    if ([self imageFromMemoryCacheForKey:key]) {
-//        [self.memCache removeObjectForKey:key];
-//    }
+
     if (key){
         //先获取将要删除的图片，存在cache中的图片是经过解压和解码的图片
         UIImage *image = [self imageFromMemoryCacheForKey:keyStr];

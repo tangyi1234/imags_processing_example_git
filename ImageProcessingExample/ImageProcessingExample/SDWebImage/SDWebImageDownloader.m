@@ -326,6 +326,7 @@
     return token;
 }
 
+//是否暂停
 - (void)setSuspended:(BOOL)suspended {
     self.downloadQueue.suspended = suspended;
 }

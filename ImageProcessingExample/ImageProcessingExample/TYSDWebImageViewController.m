@@ -69,12 +69,20 @@
 
 - (void)addArrValue:(NSMutableArray *)arr{
     for (int i = 0; i < 152; i++) {
-        [arr addObject:[self andPickStr:i]];
+        if (i == 151) {
+            [arr addObject:[self imageJpg]];
+        }else{
+            [arr addObject:[self andPickStr:i]];
+        }
     }
 }
 
 - (NSString *)andPickStr:(int)i{
     return [NSString stringWithFormat:@"http://10.10.60.114:8080/name/%d.png",i];
+}
+
+- (NSString *)imageJpg{
+    return [NSString stringWithFormat:@"http://10.10.60.114:8080/name/hhhh.jpg"];
 }
 
 - (UIImageView *)imageView{

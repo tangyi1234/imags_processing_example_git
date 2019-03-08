@@ -10,7 +10,7 @@
 #import "TYImageViewController.h"
 #import "TYLearningViewController.h"
 #import "TYSDWebImageViewController.h"
-
+#import "TYUseSDImageViewController.h"
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) NSArray *arr;
 @end
@@ -18,7 +18,7 @@
 @implementation ViewController
 - (NSArray *)arr{
     if (!_arr) {
-        _arr = [NSArray arrayWithObjects:@"图片处理",@"数组",@"学习底层WebImage", nil];
+        _arr = [NSArray arrayWithObjects:@"图片处理",@"数组",@"学习底层WebImage",@"对GPUImage学习", nil];
     }
     return _arr;
 }
@@ -62,6 +62,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 2){
         TYSDWebImageViewController *vc = [[TYSDWebImageViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(indexPath.row == 3){
+        TYUseSDImageViewController *vc = [[TYUseSDImageViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
